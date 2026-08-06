@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>FALCON SLAM LUNAR</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#127763;</text></svg>">
+<style>
+  :root{--phos:#46ff6b;--phos-hot:#b6ffc8}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:#04060a;color:#cfe9d6;
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:100dvh;padding:30px 18px;gap:22px;text-align:center;
+    background-image:radial-gradient(ellipse at 50% 30%, rgba(70,255,107,.08) 0%, rgba(4,6,10,0) 60%);
+  }
+  .wordmark{font-size:clamp(10px,1.8vw,14px);letter-spacing:.56em;text-indent:.56em;
+    font-weight:700;text-transform:uppercase;color:#6f8878}
+  h1{
+    font-style:italic;font-weight:800;
+    font-size:clamp(24px,5.6vw,50px);letter-spacing:.03em;line-height:1.15;
+    color:transparent;-webkit-text-stroke:1.7px var(--phos);
+    text-shadow:0 0 7px rgba(70,255,107,.55),0 0 18px rgba(70,255,107,.3),0 0 40px rgba(70,255,107,.16);
+  }
+  .terrain{
+    width:min(88vw,560px);height:min(30vh,190px);
+    border:1px solid rgba(70,255,107,.28);border-radius:5px;
+    background:
+      repeating-linear-gradient(to right, rgba(70,255,107,.13) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(to bottom, rgba(70,255,107,.13) 0 1px, transparent 1px 26px),
+      linear-gradient(#060d09,#04060a);
+    position:relative;overflow:hidden;
+    box-shadow:inset 0 0 50px rgba(70,255,107,.07);
+  }
+  .terrain::after{
+    content:"AWAITING SURFACE BUILD";
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:clamp(9px,1.5vw,12px);letter-spacing:.3em;font-weight:800;color:rgba(70,255,107,.5);
+  }
+  p{max-width:520px;font-size:13px;line-height:1.75;color:#7d9686}
+  strong{color:#bff8cd;font-weight:600}
+  .tag{
+    display:inline-block;padding:.4em .9em;border:1px solid rgba(70,255,107,.4);
+    border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.22em;
+    text-transform:uppercase;color:#8fd8a3;
+  }
+  a.back{color:#6f8878;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    font-weight:700;text-decoration:none;border-bottom:1px solid #29392e;padding-bottom:3px}
+  a.back:hover{color:#cfe9d6;border-color:#cfe9d6}
+</style>
+</head>
+<body>
+  <div class="wordmark">Space&nbsp;Gaming</div>
+  <h1>Falcon&nbsp;Slam&nbsp;Lunar</h1>
+  <span class="tag">Forked from Great Game Arctic</span>
+  <div class="terrain"></div>
+  <p>This is the new home for the lunar surface work. It is forked <strong>out</strong> of
+     <strong>great-game-arctic</strong>, which keeps its own copy standing and unchanged.</p>
+  <p>Repository, hub tab, backup area and tests are being set up from the Ubuntu session &mdash;
+     the surface renderer lands here once that fork is pushed.</p>
+  <a class="back" href="./">&larr; back to the lounge</a>
+</body>
+</html>

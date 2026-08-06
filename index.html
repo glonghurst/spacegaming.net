@@ -210,34 +210,34 @@
   }
   function dist(a,b){ return Math.hypot(b[0]-a[0], b[1]-a[1]); }
 
-  var LABEL_W = 420;                         // logical box the text is laid out in
+  // The band is expressed as a fraction of the PANE itself — width and height
+  // both — so the label's proportions and warp are inherited from the frame it
+  // is painted on rather than from a fixed pixel box.
+  var BAND_U = 0.46,   // share of the pane's width  (half of the original 0.86)
+      BAND_V = 0.085,  // half-height, as a share of the pane's height
+      BAND_VC = 0.46;  // vertical centre in pane space
 
   function placeLabel(poly, el) {
     var c = cornersOf(poly);
     if (!c || !c.length) return;
 
-    // A band across the middle of the pane, inset from the mullions.
-    var U0 = 0.07, U1 = 0.93, VC = 0.46;
-    var wTop = dist(bilinear(c,U0,VC), bilinear(c,U1,VC));
-    // keep the glyphs undistorted: band height follows the label's own aspect
-    var el_h = el.firstChild.getBoundingClientRect ? 0 : 0;
-    var ratio = 0.26;                        // height : width of the label box
-    var halfV = (wTop * ratio) / 2;
+    var U0 = 0.5 - BAND_U / 2, U1 = 0.5 + BAND_U / 2;
+    var TL = bilinear(c, U0, BAND_VC - BAND_V),
+        TR = bilinear(c, U1, BAND_VC - BAND_V),
+        BL = bilinear(c, U0, BAND_VC + BAND_V),
+        BR = bilinear(c, U1, BAND_VC + BAND_V);
 
-    // vertical extent expressed in pane-parametric space, using the pane's own
-    // vertical run so the band leans with the frame instead of the screen
-    var vRun = (dist(c[0],c[3]) + dist(c[1],c[2])) / 2;
-    var dv = halfV / vRun;
+    // Size the layout box to the band's real on-screen proportions, so the
+    // glyphs are never stretched — only projected.
+    var wAvg = (dist(TL,TR) + dist(BL,BR)) / 2,
+        hAvg = (dist(TL,BL) + dist(TR,BR)) / 2;
+    if (wAvg < 4 || hAvg < 2) return;
 
-    var TL = bilinear(c, U0, VC - dv),
-        TR = bilinear(c, U1, VC - dv),
-        BL = bilinear(c, U0, VC + dv),
-        BR = bilinear(c, U1, VC + dv);
-
-    var H = Math.round(LABEL_W * ratio);
+    var LABEL_W = 360;
+    var H = Math.max(8, Math.round(LABEL_W * (hAvg / wAvg)));
     el.style.width  = LABEL_W + "px";
     el.style.height = H + "px";
-    el.firstChild.style.fontSize = Math.round(H * 0.62) + "px";
+    el.firstChild.style.fontSize = Math.round(H * 0.66) + "px";
 
     var t = projection([[0,0],[LABEL_W,0],[0,H],[LABEL_W,H]], [TL,TR,BL,BR]);
     var i; for (i = 0; i < 9; i++) t[i] = t[i] / t[8];
