@@ -4,12 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SPACE GAMING</title>
-<meta name="description" content="Space Gaming — orbital lounge. Three windows.">
+<meta name="description" content="Space Gaming — orbital lounge.">
 <meta property="og:title" content="SPACE GAMING">
-<meta property="og:description" content="Three windows. Content to follow.">
+<meta property="og:description" content="Falcon Slam.">
 <meta property="og:image" content="lounge.jpg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁</text></svg>">
 <style>
+  :root{
+    --phos:#46ff6b;          /* Microbee P31-ish phosphor green */
+    --phos-hot:#b6ffc8;
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;background:#05060a;overflow:hidden}
   body{
@@ -18,83 +22,97 @@
     color:#e8e2d2;
   }
 
-  /* The image and the SVG overlay use matching fit modes, so hotspot
-     coordinates in image space stay aligned at every viewport size.
-     object-fit:cover  ⇔  preserveAspectRatio="xMidYMid slice"
-     object-fit:contain ⇔  preserveAspectRatio="xMidYMid meet"   */
-  #plate, #hits{
-    position:fixed;inset:0;
-    width:100%;height:100%;
-    display:block;
-  }
+  /* image and hotspot layer share a fit mode so coordinates stay aligned */
+  #plate, #hits{position:fixed;inset:0;width:100%;height:100%;display:block}
   #plate{object-fit:cover;object-position:center;background:#05060a}
   body.fit-contain #plate{object-fit:contain}
   #hits{z-index:2;pointer-events:none}
 
+  /* ---------- hotspots: no frame, the glass itself lights ---------- */
   .win{
-    fill:rgba(255,205,120,0);
-    stroke:rgba(255,214,140,0);
-    stroke-width:3;
+    fill:rgba(70,255,107,0);
+    stroke:none;
     pointer-events:auto;
     cursor:pointer;
-    transition:fill .28s ease, stroke .28s ease;
+    transition:fill .4s ease;
     outline:none;
   }
-  .win:hover, .win:focus-visible{
-    fill:rgba(255,205,120,.16);
-    stroke:rgba(255,226,170,.95);
-  }
-  .win:focus-visible{stroke-dasharray:9 6}
+  .win:hover, .win:focus-visible{fill:rgba(70,255,107,.055)}
+  .win.dormant{pointer-events:none;cursor:default}
 
-  .winlabel{
-    fill:#fff6e6;
-    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight:800;
-    font-size:19px;
-    letter-spacing:5px;
-    text-anchor:middle;
-    opacity:0;
+  /* ---------- holographic label ---------- */
+  .holo{
+    position:fixed;left:0;top:0;
+    transform-origin:0 0;
     pointer-events:none;
-    transition:opacity .28s ease;
-    paint-order:stroke;
-    stroke:rgba(0,0,0,.85);
-    stroke-width:5px;
+    z-index:3;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;
+    transition:opacity .55s ease;
+    will-change:transform,opacity;
   }
-  .winwrap:hover .winlabel,
-  .win:focus-visible + .winlabel{opacity:1}
+  .holo.lit{opacity:1}
+  .holo b{
+    font-style:italic;
+    font-weight:800;
+    letter-spacing:.045em;
+    white-space:nowrap;
+    color:transparent;
+    -webkit-text-stroke:1.7px var(--phos);
+    text-shadow:
+      0 0 7px  rgba(70,255,107,.55),
+      0 0 18px rgba(70,255,107,.3),
+      0 0 40px rgba(70,255,107,.16);
+    animation:flicker 5.2s steps(1,end) infinite;
+  }
+  @keyframes flicker{
+    0%,92%,100%{opacity:1}
+    93%{opacity:.55}94%{opacity:1}
+    96%{opacity:.7}97%{opacity:1}
+  }
+  .holo.hot b{
+    -webkit-text-stroke-color:var(--phos-hot);
+    text-shadow:
+      0 0 8px  rgba(182,255,200,.8),
+      0 0 22px rgba(70,255,107,.5),
+      0 0 48px rgba(70,255,107,.3);
+  }
 
-  /* ---------- wordmark ---------- */
+  /* ---------- chrome ---------- */
   .wordmark{
-    position:fixed;z-index:4;
+    position:fixed;z-index:5;
     left:50%;top:max(22px, env(safe-area-inset-top));
     transform:translateX(-50%);
     font-size:clamp(12px,2.1vw,20px);
     letter-spacing:.58em;text-indent:.58em;
-    font-weight:700;text-transform:uppercase;
-    color:#f0e6d0;
+    font-weight:700;text-transform:uppercase;color:#f0e6d0;
     text-shadow:0 2px 18px rgba(0,0,0,.95), 0 0 40px rgba(0,0,0,.8);
     pointer-events:none;white-space:nowrap;
   }
-
-  /* ---------- nudge ---------- */
-  .nudge{
-    position:fixed;z-index:4;
-    left:50%;bottom:max(20px, env(safe-area-inset-bottom));
-    transform:translateX(-50%);
-    padding:.55em 1.1em;
+  .chip{
+    position:fixed;z-index:5;
+    left:max(18px, env(safe-area-inset-left));
+    bottom:max(18px, env(safe-area-inset-bottom));
+    display:flex;align-items:center;gap:.6em;
+    padding:.55em 1em;
     border-radius:999px;
-    background:rgba(8,10,14,.62);
-    border:1px solid rgba(255,214,140,.28);
-    color:#e4d9c2;
-    font-size:clamp(9px,1.3vw,12px);
-    letter-spacing:.16em;text-transform:uppercase;font-weight:700;
-    white-space:nowrap;pointer-events:none;
-    transition:opacity .6s ease;
+    background:rgba(6,14,8,.62);
+    border:1px solid rgba(70,255,107,.34);
+    color:#bff8cd;
+    font:inherit;font-size:clamp(9px,1.25vw,11px);
+    font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+    cursor:pointer;
+    transition:opacity .4s ease, border-color .3s ease, color .3s ease;
+    -webkit-user-select:none;user-select:none;
   }
-  body.touched .nudge{opacity:0}
+  .chip:hover{border-color:rgba(70,255,107,.75);color:var(--phos-hot)}
+  .chip.on{border-color:rgba(70,255,107,.8);color:var(--phos-hot)}
+  .chip .dot{width:7px;height:7px;border-radius:50%;background:#3a5d44;transition:background .3s ease}
+  .chip.on .dot{background:var(--phos);box-shadow:0 0 10px var(--phos)}
 
   @media (prefers-reduced-motion: reduce){
-    .win,.winlabel,.nudge{transition:none}
+    .holo b{animation:none}
+    .win,.holo{transition:none}
   }
 </style>
 </head>
@@ -103,63 +121,188 @@
   <img id="plate" src="lounge.jpg"
        alt="An orbital lounge car. Passengers with enormous eyeball heads drink and smoke at tables while Earth turns beyond a bank of tall windows.">
 
-  <svg id="hits" viewBox="0 0 1280 853" preserveAspectRatio="xMidYMid slice" aria-label="Window links">
-    <g class="winwrap">
-      <a href="w1.html" aria-label="Window one">
-        <polygon class="win" points="8,152 306,138 250,448 8,362"/>
-      </a>
-      <text class="winlabel" x="150" y="300">ONE</text>
-    </g>
-    <g class="winwrap">
-      <a href="w2.html" aria-label="Window two">
-        <polygon class="win" points="332,134 432,127 404,436 268,450"/>
-      </a>
-      <text class="winlabel" x="352" y="292" style="font-size:17px">TWO</text>
-    </g>
-    <g class="winwrap">
-      <a href="w3.html" aria-label="Window three">
-        <polygon class="win" points="466,130 540,140 520,412 428,432"/>
-      </a>
-      <text class="winlabel" x="484" y="272" style="font-size:14px;letter-spacing:3px">THREE</text>
-    </g>
+  <svg id="hits" viewBox="0 0 1280 853" preserveAspectRatio="xMidYMid slice" aria-label="Windows">
+    <a href="w1.html" aria-label="Falcon Slam">
+      <polygon class="win" id="win1" points="8,152 306,138 250,448 8,362"/>
+    </a>
+    <!-- dormant for now: geometry kept so they can be woken without re-measuring -->
+    <polygon class="win dormant" id="win2" points="332,134 432,127 404,436 268,450"/>
+    <polygon class="win dormant" id="win3" points="466,130 540,140 520,412 428,432"/>
   </svg>
 
+  <!-- projected onto the glass of window one by homography, see script -->
+  <div class="holo" id="holo1"><b>Falcon&nbsp;Slam</b></div>
+
   <div class="wordmark">Space&nbsp;Gaming</div>
-  <div class="nudge" id="nudge">Three windows are open</div>
+
+  <button class="chip" id="sound" type="button" aria-label="Enable sound">
+    <span class="dot"></span><span id="soundLabel">Sound</span>
+  </button>
+
+  <audio id="whisper" src="whisper-fr.mp3" preload="auto"></audio>
 
 <script>
 (function () {
   "use strict";
-  var IMG_ASPECT = 1280 / 853;          // 1.5006
-  var plate = document.getElementById("plate"),
-      hits  = document.getElementById("hits");
 
-  // Below this viewport aspect, cover would crop the far windows off-screen,
-  // so switch both layers to contain together and letterbox instead.
+  var plate = document.getElementById("plate"),
+      hits  = document.getElementById("hits"),
+      win1  = document.getElementById("win1"),
+      holo1 = document.getElementById("holo1"),
+      chip  = document.getElementById("sound"),
+      chipLabel = document.getElementById("soundLabel"),
+      whisper   = document.getElementById("whisper");
+
+  // ── fit: cover on landscape, contain when the viewport is too tall ────────
   function fit() {
     var contain = (window.innerWidth / window.innerHeight) < 1.2;
     document.body.classList.toggle("fit-contain", contain);
-    hits.setAttribute("preserveAspectRatio",
-      contain ? "xMidYMid meet" : "xMidYMid slice");
+    hits.setAttribute("preserveAspectRatio", contain ? "xMidYMid meet" : "xMidYMid slice");
   }
-  fit();
-  window.addEventListener("resize", fit);
-  window.addEventListener("orientationchange", fit);
 
-  // Touch devices get no hover, so reveal the labels on first contact.
-  var wraps = document.querySelectorAll(".winwrap");
-  Array.prototype.forEach.call(wraps, function (w) {
-    w.addEventListener("touchstart", function () {
-      var l = w.querySelector(".winlabel");
-      if (l) l.style.opacity = 1;
-    }, { passive: true });
+  // ══════════════════════════════════════════════════════════════════════════
+  //  PERSPECTIVE
+  //  SVG only does affine, and these panes are genuinely projective — a
+  //  parallelogram fit is visibly wrong on window one. So the label is an HTML
+  //  element carrying a real homography via matrix3d, recomputed from the
+  //  polygon's on-screen corners whenever anything moves.
+  // ══════════════════════════════════════════════════════════════════════════
+  function adj(m){
+    return [ m[4]*m[8]-m[5]*m[7], m[2]*m[7]-m[1]*m[8], m[1]*m[5]-m[2]*m[4],
+             m[5]*m[6]-m[3]*m[8], m[0]*m[8]-m[2]*m[6], m[2]*m[3]-m[0]*m[5],
+             m[3]*m[7]-m[4]*m[6], m[1]*m[6]-m[0]*m[7], m[0]*m[4]-m[1]*m[3] ];
+  }
+  function mmm(a,b){
+    var c=[],i,j,k,s;
+    for(i=0;i<3;i++) for(j=0;j<3;j++){ s=0; for(k=0;k<3;k++) s+=a[3*i+k]*b[3*k+j]; c[3*i+j]=s; }
+    return c;
+  }
+  function mmv(m,v){
+    return [ m[0]*v[0]+m[1]*v[1]+m[2]*v[2],
+             m[3]*v[0]+m[4]*v[1]+m[5]*v[2],
+             m[6]*v[0]+m[7]*v[1]+m[8]*v[2] ];
+  }
+  function basis(x1,y1,x2,y2,x3,y3,x4,y4){
+    var m=[x1,x2,x3, y1,y2,y3, 1,1,1];
+    var v=mmv(adj(m),[x4,y4,1]);
+    return mmm(m,[v[0],0,0, 0,v[1],0, 0,0,v[2]]);
+  }
+  function projection(s,d){                 // s,d = [[x,y]x4] in order TL,TR,BL,BR
+    return mmm(basis(d[0][0],d[0][1],d[1][0],d[1][1],d[2][0],d[2][1],d[3][0],d[3][1]),
+               adj(basis(s[0][0],s[0][1],s[1][0],s[1][1],s[2][0],s[2][1],s[3][0],s[3][1])));
+  }
+
+  // polygon corners in screen pixels
+  function cornersOf(poly){
+    var svg = poly.ownerSVGElement, ctm = poly.getScreenCTM(), out = [], i, p, q, r;
+    if (!ctm) return null;
+    for (i = 0; i < poly.points.numberOfItems; i++) {
+      p = poly.points.getItem(i);
+      q = svg.createSVGPoint(); q.x = p.x; q.y = p.y;
+      r = q.matrixTransform(ctm);
+      out.push([r.x, r.y]);
+    }
+    return out;                              // TL, TR, BR, BL as authored
+  }
+  function lerp(a,b,t){ return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t]; }
+  function bilinear(c,u,v){                  // c = TL,TR,BR,BL
+    return lerp(lerp(c[0],c[1],u), lerp(c[3],c[2],u), v);
+  }
+  function dist(a,b){ return Math.hypot(b[0]-a[0], b[1]-a[1]); }
+
+  var LABEL_W = 420;                         // logical box the text is laid out in
+
+  function placeLabel(poly, el) {
+    var c = cornersOf(poly);
+    if (!c || !c.length) return;
+
+    // A band across the middle of the pane, inset from the mullions.
+    var U0 = 0.07, U1 = 0.93, VC = 0.46;
+    var wTop = dist(bilinear(c,U0,VC), bilinear(c,U1,VC));
+    // keep the glyphs undistorted: band height follows the label's own aspect
+    var el_h = el.firstChild.getBoundingClientRect ? 0 : 0;
+    var ratio = 0.26;                        // height : width of the label box
+    var halfV = (wTop * ratio) / 2;
+
+    // vertical extent expressed in pane-parametric space, using the pane's own
+    // vertical run so the band leans with the frame instead of the screen
+    var vRun = (dist(c[0],c[3]) + dist(c[1],c[2])) / 2;
+    var dv = halfV / vRun;
+
+    var TL = bilinear(c, U0, VC - dv),
+        TR = bilinear(c, U1, VC - dv),
+        BL = bilinear(c, U0, VC + dv),
+        BR = bilinear(c, U1, VC + dv);
+
+    var H = Math.round(LABEL_W * ratio);
+    el.style.width  = LABEL_W + "px";
+    el.style.height = H + "px";
+    el.firstChild.style.fontSize = Math.round(H * 0.62) + "px";
+
+    var t = projection([[0,0],[LABEL_W,0],[0,H],[LABEL_W,H]], [TL,TR,BL,BR]);
+    var i; for (i = 0; i < 9; i++) t[i] = t[i] / t[8];
+    el.style.transform = "matrix3d(" +
+      [t[0],t[3],0,t[6], t[1],t[4],0,t[7], 0,0,1,0, t[2],t[5],0,t[8]].join(",") + ")";
+    el.classList.add("lit");
+  }
+
+  function relayout(){ fit(); placeLabel(win1, holo1); }
+
+  relayout();
+  window.addEventListener("resize", relayout);
+  window.addEventListener("orientationchange", function(){ setTimeout(relayout, 120); });
+  if (plate.complete) relayout(); else plate.addEventListener("load", relayout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+
+  // ══════════════════════════════════════════════════════════════════════════
+  //  SOUND — a breathy French whisper, "Direction la navette"
+  //  Browsers need a gesture before any audio, so the chip is the gesture.
+  //  If the file will not load, a synthesised two-tone doorbell stands in.
+  // ══════════════════════════════════════════════════════════════════════════
+  var armed = false, AC = null, fileOK = true;
+
+  whisper.addEventListener("error", function () { fileOK = false; });
+
+  function ctx(){
+    if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; } }
+    if (AC.state === "suspended") AC.resume();
+    return AC;
+  }
+  function doorbell(){                       // fallback: ding-dong
+    var a = ctx(); if (!a) return;
+    [[660,0],[520,0.42]].forEach(function (p) {
+      var o = a.createOscillator(), g = a.createGain(), t = a.currentTime + p[1];
+      o.type = "sine"; o.frequency.setValueAtTime(p[0], t);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.22, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.1);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + 1.2);
+    });
+  }
+  function speak(){
+    if (!armed) return;
+    if (!fileOK) { doorbell(); return; }
+    try { whisper.currentTime = 0; whisper.play().catch(doorbell); } catch (e) { doorbell(); }
+  }
+
+  chip.addEventListener("click", function () {
+    armed = !armed;
+    chip.classList.toggle("on", armed);
+    chipLabel.textContent = armed ? "Sound on" : "Sound";
+    if (armed) { ctx(); speak(); }
+    else if (fileOK) { whisper.pause(); }
   });
 
-  ["pointerdown", "keydown"].forEach(function (e) {
-    window.addEventListener(e, function () {
-      document.body.classList.add("touched");
-    }, { once: true });
-  });
+  // window one: light the glass, brighten the hologram, whisper
+  function wake(on){
+    holo1.classList.toggle("hot", on);
+    if (on) speak();
+  }
+  win1.addEventListener("mouseenter", function(){ wake(true); });
+  win1.addEventListener("mouseleave", function(){ wake(false); });
+  win1.addEventListener("focus",      function(){ wake(true); });
+  win1.addEventListener("blur",       function(){ wake(false); });
+  win1.addEventListener("touchstart", function(){ wake(true); }, { passive: true });
 })();
 </script>
 </body>
