@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPACE GAMING — Window Three</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;</text></svg>">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:#05060a;
+    color:#e8e2d2;
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:100dvh;padding:28px 18px;gap:26px;text-align:center;
+    background-image:radial-gradient(circle at 50% 42%, #12141c 0%, #05060a 70%);
+  }
+  .wordmark{
+    font-size:clamp(11px,2vw,16px);
+    letter-spacing:.58em;text-indent:.58em;
+    font-weight:700;text-transform:uppercase;color:#9a917f;
+  }
+  .frame{
+    position:relative;
+    width:min(86vw, 46vh, 380px);
+    aspect-ratio:3/4;
+    border:2px solid rgba(255,214,140,.5);
+    border-radius:46% 46% 8px 8px;
+    background:
+      radial-gradient(ellipse at 30% 22%, rgba(120,170,255,.16) 0%, rgba(0,0,0,0) 62%),
+      linear-gradient(#080a12, #05060a);
+    box-shadow:
+      inset 0 0 60px rgba(120,170,255,.10),
+      0 0 0 7px rgba(255,214,140,.07),
+      0 24px 70px -18px rgba(0,0,0,.95);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+  .frame::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(115deg, rgba(255,255,255,.09) 0%, rgba(255,255,255,0) 42%);
+  }
+  .num{
+    font-size:clamp(46px,13vw,110px);
+    font-weight:800;
+    letter-spacing:.06em;
+    color:#f3e9d4;
+    opacity:.92;
+    text-shadow:0 0 44px rgba(140,180,255,.35);
+  }
+  h1{
+    font-size:clamp(14px,2.6vw,20px);
+    letter-spacing:.34em;text-indent:.34em;
+    font-weight:800;text-transform:uppercase;color:#efe4cd;
+  }
+  p{max-width:460px;font-size:13px;line-height:1.75;color:#8b8579}
+  a.back{
+    color:#b9ad95;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    font-weight:700;text-decoration:none;
+    border-bottom:1px solid #3b3830;padding-bottom:3px;
+    transition:color .25s ease,border-color .25s ease;
+  }
+  a.back:hover{color:#fff;border-color:#fff}
+</style>
+</head>
+<body>
+  <div class="wordmark">Space&nbsp;Gaming</div>
+  <div class="frame"><span class="num">3</span></div>
+  <h1>Window Three</h1>
+  <p>Nothing through this one yet. Placeholder while the content is built &mdash;
+     the route is live so it can be filled in without changing any links.</p>
+  <a class="back" href="./">&larr; back to the lounge</a>
+</body>
+</html>

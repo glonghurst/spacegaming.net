@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SPACE GAMING</title>
+<meta name="description" content="Space Gaming — orbital lounge. Three windows.">
+<meta property="og:title" content="SPACE GAMING">
+<meta property="og:description" content="Three windows. Content to follow.">
+<meta property="og:image" content="lounge.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁</text></svg>">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#05060a;overflow:hidden}
+  body{
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    color:#e8e2d2;
+  }
+
+  /* The image and the SVG overlay use matching fit modes, so hotspot
+     coordinates in image space stay aligned at every viewport size.
+     object-fit:cover  ⇔  preserveAspectRatio="xMidYMid slice"
+     object-fit:contain ⇔  preserveAspectRatio="xMidYMid meet"   */
+  #plate, #hits{
+    position:fixed;inset:0;
+    width:100%;height:100%;
+    display:block;
+  }
+  #plate{object-fit:cover;object-position:center;background:#05060a}
+  body.fit-contain #plate{object-fit:contain}
+  #hits{z-index:2;pointer-events:none}
+
+  .win{
+    fill:rgba(255,205,120,0);
+    stroke:rgba(255,214,140,0);
+    stroke-width:3;
+    pointer-events:auto;
+    cursor:pointer;
+    transition:fill .28s ease, stroke .28s ease;
+    outline:none;
+  }
+  .win:hover, .win:focus-visible{
+    fill:rgba(255,205,120,.16);
+    stroke:rgba(255,226,170,.95);
+  }
+  .win:focus-visible{stroke-dasharray:9 6}
+
+  .winlabel{
+    fill:#fff6e6;
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight:800;
+    font-size:19px;
+    letter-spacing:5px;
+    text-anchor:middle;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .28s ease;
+    paint-order:stroke;
+    stroke:rgba(0,0,0,.85);
+    stroke-width:5px;
+  }
+  .winwrap:hover .winlabel,
+  .win:focus-visible + .winlabel{opacity:1}
+
+  /* ---------- wordmark ---------- */
+  .wordmark{
+    position:fixed;z-index:4;
+    left:50%;top:max(22px, env(safe-area-inset-top));
+    transform:translateX(-50%);
+    font-size:clamp(12px,2.1vw,20px);
+    letter-spacing:.58em;text-indent:.58em;
+    font-weight:700;text-transform:uppercase;
+    color:#f0e6d0;
+    text-shadow:0 2px 18px rgba(0,0,0,.95), 0 0 40px rgba(0,0,0,.8);
+    pointer-events:none;white-space:nowrap;
+  }
+
+  /* ---------- nudge ---------- */
+  .nudge{
+    position:fixed;z-index:4;
+    left:50%;bottom:max(20px, env(safe-area-inset-bottom));
+    transform:translateX(-50%);
+    padding:.55em 1.1em;
+    border-radius:999px;
+    background:rgba(8,10,14,.62);
+    border:1px solid rgba(255,214,140,.28);
+    color:#e4d9c2;
+    font-size:clamp(9px,1.3vw,12px);
+    letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+    white-space:nowrap;pointer-events:none;
+    transition:opacity .6s ease;
+  }
+  body.touched .nudge{opacity:0}
+
+  @media (prefers-reduced-motion: reduce){
+    .win,.winlabel,.nudge{transition:none}
+  }
+</style>
+</head>
+<body>
+
+  <img id="plate" src="lounge.jpg"
+       alt="An orbital lounge car. Passengers with enormous eyeball heads drink and smoke at tables while Earth turns beyond a bank of tall windows.">
+
+  <svg id="hits" viewBox="0 0 1280 853" preserveAspectRatio="xMidYMid slice" aria-label="Window links">
+    <g class="winwrap">
+      <a href="w1.html" aria-label="Window one">
+        <polygon class="win" points="8,152 306,138 250,448 8,362"/>
+      </a>
+      <text class="winlabel" x="150" y="300">ONE</text>
+    </g>
+    <g class="winwrap">
+      <a href="w2.html" aria-label="Window two">
+        <polygon class="win" points="332,134 432,127 404,436 268,450"/>
+      </a>
+      <text class="winlabel" x="352" y="292" style="font-size:17px">TWO</text>
+    </g>
+    <g class="winwrap">
+      <a href="w3.html" aria-label="Window three">
+        <polygon class="win" points="466,130 540,140 520,412 428,432"/>
+      </a>
+      <text class="winlabel" x="484" y="272" style="font-size:14px;letter-spacing:3px">THREE</text>
+    </g>
+  </svg>
+
+  <div class="wordmark">Space&nbsp;Gaming</div>
+  <div class="nudge" id="nudge">Three windows are open</div>
+
+<script>
+(function () {
+  "use strict";
+  var IMG_ASPECT = 1280 / 853;          // 1.5006
+  var plate = document.getElementById("plate"),
+      hits  = document.getElementById("hits");
+
+  // Below this viewport aspect, cover would crop the far windows off-screen,
+  // so switch both layers to contain together and letterbox instead.
+  function fit() {
+    var contain = (window.innerWidth / window.innerHeight) < 1.2;
+    document.body.classList.toggle("fit-contain", contain);
+    hits.setAttribute("preserveAspectRatio",
+      contain ? "xMidYMid meet" : "xMidYMid slice");
+  }
+  fit();
+  window.addEventListener("resize", fit);
+  window.addEventListener("orientationchange", fit);
+
+  // Touch devices get no hover, so reveal the labels on first contact.
+  var wraps = document.querySelectorAll(".winwrap");
+  Array.prototype.forEach.call(wraps, function (w) {
+    w.addEventListener("touchstart", function () {
+      var l = w.querySelector(".winlabel");
+      if (l) l.style.opacity = 1;
+    }, { passive: true });
+  });
+
+  ["pointerdown", "keydown"].forEach(function (e) {
+    window.addEventListener(e, function () {
+      document.body.classList.add("touched");
+    }, { once: true });
+  });
+})();
+</script>
+</body>
+</html>
