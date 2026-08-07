@@ -1,0 +1,32 @@
+{
+ "generated_at": "2026-08-07T12:50:17Z",
+ "doc": "15tSOfX4sdZPn08UaO3-meWoema0k0jvyAiMfNC1Z-qI",
+ "section": "VETTED NEWS SCRAPE",
+ "count": 3,
+ "items": [
+  {
+   "id": "OBS-003",
+   "title": "ESO Very Large Telescope / UVES — sodium and lithium spectroscopy",
+   "url": "https://apnews.com/article/d64a98138fd19241700461c87b49e201",
+   "date": "Aug 7, 2026",
+   "source": "Associated Press (reporting Carl Schmidt / ESO VLT-UVES)",
+   "evidence": "Boston University’s Carl Schmidt told AP that VLT/UVES detected sodium and lithium extending tens of kilometres for roughly five to ten minutes after impact. This is reported spectroscopic sensor evidence, but no ESO data release, reduced spectrum, observing log, or calibration product has yet been published; ingest the page as a vetted report, not as a released dataset."
+  },
+  {
+   "id": "OBS-002",
+   "title": "KARI/KASA Danuri (KPLO/LUTI) — orbital before/after surface imaging",
+   "url": "https://x.com/kari2030/status/2085245021469687982",
+   "date": "Aug 7, 2026",
+   "source": "Korea Aerospace Research Institute / Korea AeroSpace Administration (KARI/KASA)",
+   "evidence": "Korea’s Danuri orbiter published pre-impact and post-impact LUTI images showing a new compact, asymmetric surface disturbance at the expected site. These are orbital sensor images confirming the impact aftermath; the published social-media frames do not yet supply a calibrated crater diameter, ejecta-ray length, or plume altitude."
+  },
+  {
+   "id": "OBS-001",
+   "title": "IAA-CSIC / MIDAS — time-resolved optical ejecta video",
+   "url": "https://x.com/jmmadiedo/status/2085344665562165293",
+   "date": "Aug 7, 2026",
+   "source": "José María Madiedo / Instituto de Astrofísica de Andalucía (IAA-CSIC/MIDAS)",
+   "evidence": "José María Madiedo reports that the IAA-CSIC team captured the Falcon 9 upper-stage lunar impact and released an 11-second preliminary video showing ejecta evolving beyond the lunar limb. This is direct optical sensor imagery, but the public clip remains uncalibrated: no plate scale, cadence, photometry, or kilometre conversion has been released."
+  }
+ ]
+}
