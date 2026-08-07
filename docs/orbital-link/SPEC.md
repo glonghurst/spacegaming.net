@@ -144,10 +144,17 @@ Three taps and done, anonymous, no account (the pattern every outage site conver
 - Deferred by decision, not gap: simhash near-dup, dynamic PoW difficulty, IP
   reputation feeds, accounts, uploads/evidence lane, instrumented telemetry tier.
 
-## 8. Open questions for the operator
+## 8. Operator decisions — all four answered by Gavin, 2026-08-06
 
-1. Ingress approval (build-time gate for §5's Funnel/Caddy change).
-2. Which affiliate programs, and the donation rail (both need accounts only Gavin holds).
-3. Name check: is ORBITAL LINK the shipping name or a working title?
-4. v1 provider list: Starlink + Amazon Leo + "IRIS² (pre-service)" as a tracked-but-
-   empty lane, or launch Starlink-only until Leo reports exist?
+1. **Ingress: PRE-APPROVED.** The build session may make §5's Funnel/Caddy change
+   (TCP-forward + PROXY protocol, Caddy on localhost) without a second approval stop.
+   Reversible via funnel off + service stop. Also recorded on `sgn20260806ingress`.
+2. **Money corners: placeholders in v1.** Both corners ship as styled slots with house
+   content; real affiliate programs and the donation rail are enrolled later at Gavin's
+   pace and swap in as content changes, never build changes.
+3. **Name: ORBITAL LINK ships.** On the glass (W2 hologram label), page title,
+   `/data/v1/` branding, vocab file — not a working title.
+4. **Providers: all three lanes, honest labels.** Starlink live; Amazon Leo
+   "limited service — tracking begins now"; IRIS² "pre-service — watching".
+   Claims the vacant index positions (§1) while the labels keep empty charts from
+   reading as a dead site.
