@@ -6,12 +6,19 @@
      <script src="vc.js" defer data-key="massdrivers-net" data-start="10"></script>
 
    The number is real and shared across everyone who loads the page.
-   counterapi.dev holds it; abacus is the standby; a locally cached value
-   covers both being unreachable. The element starts invisible and is only
-   revealed once a number exists — a counter showing a dash or an error in
-   the corner of a landing page looks worse than no counter at all.
+   abacus.jasoncameron.dev holds it; a locally cached value covers the service
+   being unreachable. The element starts invisible and is only revealed once a
+   number exists — a counter showing a dash or an error in the corner of a
+   landing page looks worse than no counter at all.
+
+   History worth keeping: this first shipped with counterapi.dev as the primary
+   and abacus as the standby. counterapi.dev v1 started returning 410 Gone
+   ("deprecated, migrate to v2") within the hour, and v2 needs an account. The
+   fallback caught it and nothing broke on the page, which is the whole reason
+   the chain exists. Primary is now abacus; keep at least one spare in CHAIN.
 
    data-key    counter name, unique per site
+   data-ns     namespace (default below) — rotate it to reset the tally
    data-start  what the first visitor should see (default 10)
    data-ink    colour (default a muted slate that sits on a dark page)
 
@@ -24,7 +31,10 @@
   var me = document.currentScript;
   if (!me || !window.fetch) return;
 
-  var NS       = "gavdev",
+  /* The namespace is public and unauthenticated, so it doubles as the only
+     thing keeping someone else's counter out of ours — hence the suffix.
+     Changing it starts a fresh tally from START. */
+  var NS       = me.getAttribute("data-ns") || "gavdev-md7k2q",
       KEY      = me.getAttribute("data-key"),
       START    = parseInt(me.getAttribute("data-start"), 10) || 10,
       INK      = me.getAttribute("data-ink") || "#7c8492",
@@ -35,6 +45,7 @@
   /* the service's first hit returns 1, so this offset lands the first
      visitor on START exactly */
   var SEED = START - 1;
+  var BASE = "https://abacus.jasoncameron.dev/";
 
   var css = document.createElement("style");
   css.textContent =
@@ -76,28 +87,28 @@
 
   function show(n) { out.textContent = String(n); el.classList.add("on"); }
 
-  var chain = isNewVisit()
-    ? ["https://api.counterapi.dev/v1/" + NS + "/" + KEY + "/up",
-       "https://abacus.jasoncameron.dev/hit/" + NS + "/" + KEY]
-    : ["https://api.counterapi.dev/v1/" + NS + "/" + KEY + "/",
-       "https://abacus.jasoncameron.dev/get/" + NS + "/" + KEY];
+  var bump  = isNewVisit();
+  var CHAIN = [BASE + (bump ? "hit/" : "get/") + NS + "/" + KEY];
 
   (function attempt(i) {
-    if (i >= chain.length) {
+    if (i >= CHAIN.length) {
       var c = readCache();
       if (c) show(c);          /* last known good, silently */
-      return;                  /* nothing known: stay invisible */
+      return;                  /* nothing known at all: stay invisible */
     }
-    fetch(chain[i], { cache: "no-store" })
-      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+    fetch(CHAIN[i], { cache: "no-store" })
+      .then(function (r) {
+        /* nobody has visited yet — that is a real answer, not a failure */
+        if (r.status === 404 && !bump) return { value: 0 };
+        return r.ok ? r.json() : Promise.reject();
+      })
       .then(function (j) {
-        var n = typeof j.count === "number" ? j.count
-              : typeof j.value === "number" ? j.value
+        var n = typeof j.value === "number" ? j.value
+              : typeof j.count === "number" ? j.count
               : null;
         if (n === null) return Promise.reject();
-        /* the two services keep separate tallies — never let a fallback
-           walk the number backwards for someone who saw the higher one */
-        show(writeCache(Math.max(n + SEED, readCache())));
+        /* never let a stale or lower reading walk the number backwards */
+        show(writeCache(Math.max(n + SEED, readCache(), START)));
       })
       .catch(function () { attempt(i + 1); });
   })(0);
