@@ -1,8 +1,10 @@
 /* Falcon 9 second stage, 2025-010D. HERO asset, supplied via the
- * Dropbox MVD_ASSETS portal 2026-08-13 (Meshy_AI__0812221115, 3.1M
- * tris decimated to ~25k in Blender, UVs preserved), baked by
- * tools/bake-f9.py. A GENERATED RECONSTRUCTION, not a survey of the
- * real hardware -- see AGENTS.md rule 3.
+ * Dropbox MVD_ASSETS portal 2026-08-13 (Meshy_AI__0813074743 GLB,
+ * 3.1M tris; geometry+UVs extracted from the GLB itself by
+ * tools/glb2obj.py -- v verbatim, no flip -- then decimated in
+ * Blender at ratio 0.03 to 94297 tris), baked by tools/bake-f9.py.
+ * A GENERATED RECONSTRUCTION, not a survey of the real hardware --
+ * see AGENTS.md rule 3.
  *
  * Rotated so the long axis is +Y, re-centred, and scaled NON-UNIFORMLY
  * to the real 13.8 m x 3.66 m: the donated mesh measured 4.86:1 where
