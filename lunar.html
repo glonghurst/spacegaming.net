@@ -435,7 +435,7 @@
   <div class="row" style="margin-top:4px">
     <button class="hov" id="flyBtn" title="WASD to move, drag to look, Shift to burst. Esc returns to the vantage.">FLY</button>
     <button class="hov" id="dim2Btn" title="DIM2 flight: WASD pans, Q/E rotates, wheel changes altitude, T recentres. The mouse never drives the camera, so clicks stay free.">DIM2 FLIGHT</button>
-    <button class="hov" id="flyHome" title="Return to the 2.5 km vantage over the impact site">VANTAGE</button>
+    <button class="hov" id="flyHome" title="Return to the default vantage over the impact site (25 km, Doc 2026-08-14)">VANTAGE</button>
     <span class="spnote" id="flyReadout" style="margin:0 0 0 4px"></span>
   </div>
   <div class="spnote" id="surfNote"></div>
@@ -472,7 +472,7 @@
   </label>
   <span class="spdsep"></span>
   <label class="spdbin" title="Altitude above ground, km. Type a height to jump to it.">ALT
-    <input id="altKm" type="number" min="0.05" max="2000" step="5" value="150">
+    <input id="altKm" type="number" min="0.05" max="2000" step="5" value="25">
   </label>
   <span class="spdsep"></span>
   <label class="spdbin" title="Time to predicted impact. The surface view replays the last four minutes.">IMPACT
