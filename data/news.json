@@ -1,9 +1,18 @@
 {
- "generated_at": "2026-08-10T14:20:43Z",
+ "generated_at": "2026-08-15T10:58:23Z",
  "doc": "15tSOfX4sdZPn08UaO3-meWoema0k0jvyAiMfNC1Z-qI",
  "section": "VETTED NEWS SCRAPE",
- "count": 3,
+ "count": 4,
  "items": [
+  {
+   "id": "OBS-004",
+   "title": "Space.com — reported LRO imaging and Lowell spectrograph details",
+   "url": "https://www.space.com/astronomy/moon/spacex-rockets-moon-crash-highlights-a-tangible-operational-risk-of-lunar-settlement",
+   "date": "Aug 15, 2026",
+   "source": "Space.com (reporting KARI, NASA/LRO, Carl Schmidt, Patrick Lierle, and Lowell Discovery Telescope observations)",
+   "evidence": "Space.com reports that NASA’s LRO also imaged the impact site and that a Chinese commercial debris-monitoring satellite recorded the collision; it additionally attributes a bright lithium plume and fainter sodium signature to Lowell Discovery Telescope long-slit spectroscopy. No linked NASA/LROC image, Chinese sensor product, calibrated spectrum, observing log, plate scale, or quantitative plume/crater measurement accompanies the article, so these remain reputable secondary reports pending primary-product release.",
+   "image": "data/news/OBS-004.jpg"
+  },
   {
    "id": "OBS-003",
    "title": "ESO Very Large Telescope / UVES — sodium and lithium spectroscopy",
