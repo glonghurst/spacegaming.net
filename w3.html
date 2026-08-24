@@ -64,14 +64,106 @@
     transition:color .25s ease,border-color .25s ease;
   }
   a.back:hover{color:#fff;border-color:#fff}
+
+  form{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+  input{
+    width:150px;background:rgba(255,255,255,.04);color:#f3e9d4;
+    border:1px solid rgba(255,214,140,.32);border-radius:8px;
+    padding:11px 14px;font-size:20px;letter-spacing:.5em;text-indent:.5em;
+    text-align:center;font-family:inherit;outline:none;
+  }
+  input:focus{border-color:rgba(255,214,140,.75);box-shadow:0 0 0 3px rgba(255,214,140,.10)}
+  button{
+    background:rgba(255,214,140,.10);color:#f3e9d4;
+    border:1px solid rgba(255,214,140,.42);border-radius:8px;
+    padding:11px 20px;font-size:12px;font-weight:700;
+    letter-spacing:.22em;text-transform:uppercase;cursor:pointer;font-family:inherit;
+  }
+  button:hover{background:rgba(255,214,140,.18);border-color:rgba(255,214,140,.7)}
+  .msg{display:none;color:#d2705f;font-size:11px;letter-spacing:.18em;
+       text-transform:uppercase;font-weight:700}
+  .msg.on{display:block}
+  .note{font-size:10px;color:#5d574c;letter-spacing:.1em;max-width:440px;line-height:1.7}
+  #open{display:none;flex-direction:column;align-items:center;gap:18px}
+  #open.on{display:flex}
+  a.enter{
+    display:inline-block;color:#0a0c12;background:#f3e9d4;
+    border-radius:8px;padding:13px 26px;text-decoration:none;
+    font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+  }
+  a.enter:hover{background:#fff}
+  .tail{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+        font-size:11px;color:#8b8579;letter-spacing:.04em}
+  @keyframes shake{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(3px)}
+                   50%{transform:translateX(-4px)}}
+  .shake{animation:shake .4s}
+  @media (prefers-reduced-motion:reduce){.shake{animation:none}}
 </style>
 </head>
 <body>
   <div class="wordmark">Space&nbsp;Gaming</div>
   <div class="frame"><span class="num">3</span></div>
-  <h1>Window Three</h1>
-  <p>Nothing through this one yet. Placeholder while the content is built &mdash;
-     the route is live so it can be filled in without changing any links.</p>
+  <h1>Hashpile</h1>
+
+  <div id="sealed">
+    <p class="sub">This window is sealed. Enter the access code.</p>
+    <form id="gate" autocomplete="off">
+      <input id="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4"
+             placeholder="&middot;&middot;&middot;&middot;" aria-label="Access code" autofocus>
+      <button type="submit">Enter</button>
+    </form>
+    <div class="msg" id="msg">Code rejected</div>
+  </div>
+
+  <div id="open">
+    <p>The word map over the gameplay corpus &mdash; pick a word, read the dialogue
+       behind it. <strong>It answers only from inside GavDev.</strong> On the tailnet
+       this opens; anywhere else the address simply will not resolve, and that is
+       deliberate rather than broken.</p>
+    <a class="enter" href="http://100.122.246.102:5050/m">Open the word map</a>
+    <div class="tail">100.122.246.102:5050/m</div>
+  </div>
+
   <a class="back" href="./">&larr; back to the lounge</a>
+  <p class="note">The code is checked in the browser, exactly as window one&rsquo;s is, so it
+     keeps honest people out and nobody else. Nothing sensitive lives behind it: this page
+     carries no transcripts, no names and no audio &mdash; only a door. The corpus itself
+     never leaves the private network.</p>
+
+<script>
+(function(){
+  "use strict";
+  var form = document.getElementById('gate'),
+      code = document.getElementById('code'),
+      msg  = document.getElementById('msg'),
+      sealed = document.getElementById('sealed'),
+      open = document.getElementById('open');
+
+  // Deliberately NO reachability probe. This page is served over HTTPS and the
+  // target is plain HTTP on the tailnet, so a fetch() would be blocked as mixed
+  // content every time, on the tailnet as much as off it -- a check that can
+  // only ever fail, reporting "unreachable" to the one person it works for.
+  // Top-level navigation to HTTP is still permitted, so the link is real. The
+  // page states the condition instead of pretending to test it.
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (code.value.trim() === '1313') {
+      msg.classList.remove('on');
+      sealed.style.display = 'none';
+      open.classList.add('on');
+    } else {
+      msg.classList.add('on');
+      form.classList.remove('shake');
+      void form.offsetWidth;
+      form.classList.add('shake');
+      code.value = ''; code.focus();
+    }
+  });
+  code.addEventListener('input', function(){
+    code.value = code.value.replace(/\D/g, '');
+    msg.classList.remove('on');
+  });
+})();
+</script>
 </body>
 </html>
