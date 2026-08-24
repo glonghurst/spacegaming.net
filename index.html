@@ -226,11 +226,18 @@
   // The band is expressed as a fraction of the PANE itself — width and height
   // both — so the label's proportions and warp are inherited from the frame it
   // is painted on rather than from a fixed pixel box.
+  var WIN2_TILT = 15;  // degrees, right side of the window-two wordmark raised
+
   var BAND_U = 0.46,   // share of the pane's width  (half of the original 0.86)
       BAND_V = 0.085,  // half-height, as a share of the pane's height
       BAND_VC = 0.46;  // vertical centre in pane space
 
-  function placeLabel(poly, el) {
+  // tiltDeg (optional) rotates the finished wordmark in SCREEN space, positive
+  // = right side raised. Applied by rotating the destination band about its own
+  // centre before the homography is solved, so it is a true on-screen angle
+  // rather than a rotation inside the glass plane that perspective would then
+  // shear into some other number.
+  function placeLabel(poly, el, tiltDeg) {
     var c = cornersOf(poly);
     if (!c || !c.length) return;
 
@@ -270,14 +277,27 @@
       label.style.fontSize = Math.max(6, Math.floor(base * (MAX_W / textW))) + "px";
     }
 
-    var t = projection([[0,0],[LABEL_W,0],[0,H],[LABEL_W,H]], [TL,TR,BL,BR]);
+    var quad = [TL, TR, BL, BR];
+    if (tiltDeg) {
+      // Screen y runs DOWN, so raising the right side is a negative angle.
+      var a  = -tiltDeg * Math.PI / 180,
+          ca = Math.cos(a), sa = Math.sin(a),
+          cx = (TL[0] + TR[0] + BL[0] + BR[0]) / 4,
+          cy = (TL[1] + TR[1] + BL[1] + BR[1]) / 4;
+      quad = quad.map(function (p) {
+        var dx = p[0] - cx, dy = p[1] - cy;
+        return [cx + dx * ca - dy * sa, cy + dx * sa + dy * ca];
+      });
+    }
+
+    var t = projection([[0,0],[LABEL_W,0],[0,H],[LABEL_W,H]], quad);
     var i; for (i = 0; i < 9; i++) t[i] = t[i] / t[8];
     el.style.transform = "matrix3d(" +
       [t[0],t[3],0,t[6], t[1],t[4],0,t[7], 0,0,1,0, t[2],t[5],0,t[8]].join(",") + ")";
     el.classList.add("lit");
   }
 
-  function relayout(){ fit(); placeLabel(win1, holo1); placeLabel(win2, holo2); }
+  function relayout(){ fit(); placeLabel(win1, holo1); placeLabel(win2, holo2, WIN2_TILT); }
 
   relayout();
   window.addEventListener("resize", relayout);
