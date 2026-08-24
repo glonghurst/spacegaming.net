@@ -125,13 +125,16 @@
     <a href="w1.html" aria-label="Falcon Slam">
       <polygon class="win" id="win1" points="8,152 306,138 250,448 8,362"/>
     </a>
+    <a href="w2.html" aria-label="Orbital Link">
+      <polygon class="win" id="win2" points="332,134 432,127 404,436 268,450"/>
+    </a>
     <!-- dormant for now: geometry kept so they can be woken without re-measuring -->
-    <polygon class="win dormant" id="win2" points="332,134 432,127 404,436 268,450"/>
     <polygon class="win dormant" id="win3" points="466,130 540,140 520,412 428,432"/>
   </svg>
 
   <!-- projected onto the glass of window one by homography, see script -->
   <div class="holo" id="holo1"><b>Falcon&nbsp;Slam</b></div>
+  <div class="holo" id="holo2"><b>Orbital&nbsp;Link</b></div>
 
   <div class="wordmark">Space&nbsp;Gaming</div>
 
@@ -149,6 +152,8 @@
       hits  = document.getElementById("hits"),
       win1  = document.getElementById("win1"),
       holo1 = document.getElementById("holo1"),
+      win2  = document.getElementById("win2"),
+      holo2 = document.getElementById("holo2"),
       chip  = document.getElementById("sound"),
       chipLabel = document.getElementById("soundLabel"),
       whisper   = document.getElementById("whisper");
@@ -237,7 +242,25 @@
     var H = Math.max(8, Math.round(LABEL_W * (hAvg / wAvg)));
     el.style.width  = LABEL_W + "px";
     el.style.height = H + "px";
-    el.firstChild.style.fontSize = Math.round(H * 0.66) + "px";
+
+    // Size from the band's height, then FIT TO ITS WIDTH. Height alone is not
+    // enough: a tall narrow pane yields a big H, and a longer wordmark then
+    // runs straight off the glass. Window one never showed this because
+    // "Falcon Slam" is short and its pane is wide; window two's "Orbital Link"
+    // overflowed on the first render. Shrinking to fit is a no-op whenever the
+    // text already fits, so window one is untouched.
+    var label = el.firstChild;
+    label.style.whiteSpace = "nowrap";
+    label.style.fontSize = Math.round(H * 0.66) + "px";
+    // The limit is the PANE, not the band. BAND_U is 0.46, so the band covers
+    // under half the glass and a wordmark is meant to spill past it -- clamping
+    // to LABEL_W shrank "Falcon Slam" and changed window one, which was not the
+    // brief. LABEL_W / BAND_U is the pane's full width in box units.
+    var MAX_W = (LABEL_W / BAND_U) * 0.92;
+    var base = Math.round(H * 0.66), textW = label.scrollWidth;
+    if (textW > MAX_W) {
+      label.style.fontSize = Math.max(6, Math.floor(base * (MAX_W / textW))) + "px";
+    }
 
     var t = projection([[0,0],[LABEL_W,0],[0,H],[LABEL_W,H]], [TL,TR,BL,BR]);
     var i; for (i = 0; i < 9; i++) t[i] = t[i] / t[8];
@@ -246,7 +269,7 @@
     el.classList.add("lit");
   }
 
-  function relayout(){ fit(); placeLabel(win1, holo1); }
+  function relayout(){ fit(); placeLabel(win1, holo1); placeLabel(win2, holo2); }
 
   relayout();
   window.addEventListener("resize", relayout);
@@ -303,6 +326,14 @@
   win1.addEventListener("focus",      function(){ wake(true); });
   win1.addEventListener("blur",       function(){ wake(false); });
   win1.addEventListener("touchstart", function(){ wake(true); }, { passive: true });
+
+  // window two: glass and label only -- the whisper belongs to window one
+  function wake2(on){ holo2.classList.toggle("hot", on); }
+  win2.addEventListener("mouseenter", function(){ wake2(true); });
+  win2.addEventListener("mouseleave", function(){ wake2(false); });
+  win2.addEventListener("focus",      function(){ wake2(true); });
+  win2.addEventListener("blur",       function(){ wake2(false); });
+  win2.addEventListener("touchstart", function(){ wake2(true); }, { passive: true });
 })();
 </script>
   <script src="vc.js" defer data-key="spacegaming-net" data-start="10" data-ink="#8fe6a4"></script>

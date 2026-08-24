@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ORBITAL LINK — preview</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;</text></svg>">
+<style>
+  :root{
+    --bg:#05060a; --panel:#0a0d15; --panel2:#0d111b;
+    --ink:#e8e2d2; --dim:#8b8579; --faint:#5c5850;
+    --blue:#7fb2ff; --amber:#ffd68c; --good:#5fd39a; --warn:#ffb454; --bad:#e0644f;
+    --line:rgba(255,214,140,.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(ellipse at 50% -10%, rgba(120,170,255,.10) 0%, rgba(5,6,10,0) 60%);
+    min-height:100dvh; padding:0 0 60px;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+  /* ---------- preview strip: this page is a mockup and must say so ---------- */
+  .previewbar{
+    background:repeating-linear-gradient(135deg,rgba(255,214,140,.10) 0 12px,rgba(255,214,140,.04) 12px 24px);
+    border-bottom:1px solid var(--line); padding:9px 20px; text-align:center;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase; font-weight:800; color:var(--amber);
+  }
+  .previewbar span{color:var(--dim);font-weight:600;letter-spacing:.06em;text-transform:none;display:block;margin-top:4px;font-size:11px}
+
+  header{padding:38px 0 26px;text-align:center}
+  .wordmark{font-size:clamp(10px,1.8vw,13px);letter-spacing:.56em;text-indent:.56em;
+    font-weight:700;text-transform:uppercase;color:#6d6759}
+  h1{margin-top:14px;font-size:clamp(28px,7vw,60px);font-weight:800;letter-spacing:.16em;text-indent:.16em;
+    text-transform:uppercase;color:transparent;-webkit-text-stroke:1.5px var(--blue);
+    text-shadow:0 0 10px rgba(127,178,255,.45),0 0 34px rgba(127,178,255,.18)}
+  .tagline{margin-top:14px;font-size:13px;line-height:1.7;color:var(--dim);max-width:560px;margin-inline:auto}
+
+  h2{font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:800;color:var(--amber);
+    margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  section{margin-top:40px}
+
+  /* ---------- news banner ---------- */
+  .news{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .news li{display:flex;gap:14px;align-items:baseline;padding:11px 16px;border-bottom:1px solid rgba(255,214,140,.07);font-size:13px;line-height:1.55}
+  .news li:last-child{border-bottom:none}
+  .news time{color:var(--faint);font-size:11px;letter-spacing:.08em;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .news .src{color:var(--faint);font-size:11px;white-space:nowrap;margin-left:auto}
+
+  /* ---------- provider telemetry ---------- */
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}
+  .card h3{font-size:15px;font-weight:800;letter-spacing:.06em;display:flex;align-items:center;gap:9px}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .lane{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+    padding:3px 8px;border-radius:999px;border:1px solid currentColor;margin-left:auto}
+  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 6px}
+  .metric{background:var(--panel2);border-radius:6px;padding:10px 8px;text-align:center}
+  .metric b{display:block;font-size:19px;font-weight:800;font-variant-numeric:tabular-nums}
+  .metric span{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:4px}
+  .chartlab{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:14px 0 6px;
+    display:flex;justify-content:space-between;align-items:center}
+  .baselinekey{display:inline-flex;align-items:center;gap:6px;text-transform:none;letter-spacing:.04em}
+  .baselinekey i{display:inline-block;width:16px;height:0;border-top:1px dashed var(--amber)}
+  svg{display:block;width:100%;height:auto}
+  .nodata{font-size:12px;color:var(--faint);line-height:1.6;padding:18px 4px;text-align:center;font-style:italic}
+
+  /* ---------- report form ---------- */
+  .report{background:var(--panel);border:1px solid rgba(127,178,255,.22);border-radius:10px;padding:22px}
+  .steprow{margin-bottom:18px}
+  .steprow > label{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--faint);font-weight:800;margin-bottom:9px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--panel2);border:1px solid rgba(255,255,255,.09);border-radius:999px;
+    color:var(--ink);font:inherit;font-size:12.5px;padding:7px 14px;cursor:pointer;
+    transition:border-color .18s ease,background .18s ease,color .18s ease}
+  .chip:hover{border-color:rgba(127,178,255,.55)}
+  .chip[aria-pressed="true"]{background:rgba(127,178,255,.16);border-color:var(--blue);color:#fff;font-weight:700}
+  select,textarea{width:100%;background:var(--panel2);border:1px solid rgba(255,255,255,.09);
+    border-radius:6px;color:var(--ink);font:inherit;font-size:13px;padding:10px 12px;outline:none}
+  select:focus,textarea:focus{border-color:var(--blue)}
+  textarea{resize:vertical;min-height:64px}
+  .counter{font-size:10px;color:var(--faint);text-align:right;margin-top:5px;letter-spacing:.08em}
+  .submitrow{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:20px;
+    padding-top:18px;border-top:1px solid var(--line)}
+  button.send{background:transparent;border:1px solid rgba(127,178,255,.55);border-radius:999px;
+    color:var(--blue);font:inherit;font-size:11px;font-weight:800;letter-spacing:.2em;
+    text-transform:uppercase;padding:.85em 2.1em;cursor:pointer;
+    transition:border-color .2s,color .2s,background .2s}
+  button.send:hover:not(:disabled){border-color:var(--blue);color:#fff;background:rgba(127,178,255,.14)}
+  button.send:disabled{opacity:.34;cursor:not-allowed}
+  .sendhint{font-size:11px;color:var(--faint);line-height:1.6;flex:1;min-width:200px}
+  .thanks{font-size:12px;color:var(--good);letter-spacing:.06em;font-weight:700;opacity:0;transition:opacity .3s}
+  .thanks.on{opacity:1}
+  .deal{margin-top:16px;font-size:11px;line-height:1.7;color:var(--faint);
+    background:var(--panel2);border-left:2px solid var(--amber);padding:11px 14px;border-radius:0 6px 6px 0}
+
+  /* ---------- breakdown + wall ---------- */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:820px){.split{grid-template-columns:1fr}}
+  .bar{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:12px}
+  .bar .k{width:104px;flex:none;color:var(--dim);text-align:right}
+  .bar .t{flex:1;height:15px;background:var(--panel2);border-radius:3px;overflow:hidden}
+  .bar .t i{display:block;height:100%;background:linear-gradient(90deg,rgba(127,178,255,.45),rgba(127,178,255,.85))}
+  .bar .n{width:52px;flex:none;color:var(--faint);font-variant-numeric:tabular-nums;font-size:11px}
+  .bar.suppressed .t i{background:repeating-linear-gradient(135deg,rgba(255,255,255,.10) 0 5px,rgba(255,255,255,.03) 5px 10px)}
+  .wall{max-height:420px;overflow-y:auto}
+  .post{border-bottom:1px solid rgba(255,214,140,.07);padding:12px 2px}
+  .post:last-child{border-bottom:none}
+  .post .meta{display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:10px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .tag{background:var(--panel2);border-radius:3px;padding:2px 7px;color:var(--dim)}
+  .tag.crit{color:var(--amber)}
+  .post p{font-size:13px;line-height:1.6;color:#cfc9bb}
+  .post.mine{background:rgba(127,178,255,.06);border-radius:6px;padding:12px 10px}
+  .post.mine .meta::after{content:"your report — stays in this browser";color:var(--blue);letter-spacing:.04em;text-transform:none}
+  .sent{font-weight:800;font-variant-numeric:tabular-nums}
+
+  /* ---------- data product ---------- */
+  .tree{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:16px 18px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.85;
+    color:var(--dim);overflow-x:auto;white-space:pre}
+  .pending{color:var(--faint);font-style:italic}
+
+  /* ---------- money corners: styled slots, house content (decision 2) ---------- */
+  .slot{background:var(--panel);border:1px dashed rgba(255,214,140,.28);border-radius:10px;padding:20px;text-align:center}
+  .slot b{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin-bottom:9px}
+  .slot p{font-size:12px;line-height:1.7;color:var(--faint)}
+
+  footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);text-align:center}
+  footer a{color:var(--dim);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;
+    text-decoration:none;border-bottom:1px solid #3b3830;padding-bottom:3px}
+  footer a:hover{color:#fff;border-color:#fff}
+  footer p{margin-top:16px;font-size:10px;color:var(--faint);letter-spacing:.08em;line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="previewbar">
+  Preview — nothing here is live
+  <span>Telemetry and wall posts are illustrative sample data. Your report is held in this browser only; there is no ingress behind this page yet.</span>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <div class="wordmark">Space&nbsp;Gaming</div>
+    <h1>Orbital&nbsp;Link</h1>
+    <p class="tagline">Service advice for gamers on satellite internet. Live status, regional telemetry,
+       and a feedback wall that crosses <b>provider &times; game &times; platform</b> &mdash; the cut nobody else publishes.</p>
+  </header>
+
+  <section>
+    <h2>Service news</h2>
+    <ul class="news" id="news"></ul>
+  </section>
+
+  <section>
+    <h2>Provider telemetry <span style="float:right;font-weight:600;letter-spacing:.04em;text-transform:none;color:var(--faint)" id="regionLabel"></span></h2>
+    <div style="margin-bottom:16px">
+      <label for="region" style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-weight:800;display:block;margin-bottom:8px">Your region</label>
+      <select id="region" style="max-width:340px"></select>
+    </div>
+    <div class="grid3" id="providers"></div>
+  </section>
+
+  <section>
+    <h2>Report your experience</h2>
+    <div class="report">
+      <div class="steprow">
+        <label id="lb-provider">Provider</label>
+        <div class="chips" id="f-provider" role="group" aria-labelledby="lb-provider"></div>
+      </div>
+      <div class="steprow">
+        <label for="f-game">Game</label>
+        <select id="f-game"></select>
+      </div>
+      <div class="steprow">
+        <label id="lb-platform">Platform</label>
+        <div class="chips" id="f-platform" role="group" aria-labelledby="lb-platform"></div>
+      </div>
+      <div class="steprow">
+        <label id="lb-criterion">What happened</label>
+        <div class="chips" id="f-criterion" role="group" aria-labelledby="lb-criterion"></div>
+      </div>
+      <div class="steprow">
+        <label for="f-text">Anything to add <span style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
+        <textarea id="f-text" maxlength="280" placeholder="Optional. Any language — the wall translates and keeps your original."></textarea>
+        <div class="counter"><span id="count">0</span>/280</div>
+      </div>
+
+      <div class="submitrow">
+        <button class="send" id="send" disabled>Send report</button>
+        <div class="sendhint" id="hint">Pick a provider, platform and what happened.</div>
+        <div class="thanks" id="thanks">Logged — the wall and the breakdown updated.</div>
+      </div>
+
+      <div class="deal">
+        <b style="color:var(--amber)">The deal, stated up front.</b> Daily aggregates are published free
+        forever under CC BY 4.0. Raw per-report data and sub-daily detail are the paid provider feed.
+        No accounts, no uploads, no e-mail — a report is four taps and coarse region, never a precise location.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The wall</h2>
+    <div class="split">
+      <div class="card">
+        <div class="chartlab"><span>Reports by criterion &mdash; last 24h</span><span id="totalReports"></span></div>
+        <div id="breakdown"></div>
+        <p style="font-size:11px;color:var(--faint);line-height:1.7;margin-top:14px">
+          Hatched bars are cells with fewer than three reports. They are counted but
+          <b>suppressed in public aggregates</b> &mdash; too few to be honest about, and small
+          cells are how individual reports get reverse-engineered.</p>
+      </div>
+      <div class="card">
+        <div class="chartlab"><span>Recent reports</span><span id="wallCount"></span></div>
+        <div class="wall" id="wall"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Data product &mdash; <code style="font-family:inherit;color:var(--dim)">/data/v1/</code></h2>
+    <div class="tree" id="tree"></div>
+    <p style="font-size:11px;color:var(--faint);line-height:1.8;margin-top:14px">
+      A static tree designed as an API: stable versioned URLs, every payload self-describing
+      (<code>schema_version</code>, <code>generated_at</code>, <code>row_count</code>, <code>license</code>),
+      <code>latest.json</code> alongside immutable dated snapshots, JSONL for bulk and CSV for the
+      daily aggregate. A breaking change ships as <code>/data/v2/</code> beside it, never in place.
+      <b class="pending">None of these paths exist yet</b> &mdash; they are shown as the shape to build,
+      which is why nothing above is a link.</p>
+  </section>
+
+  <section>
+    <h2>Corners</h2>
+    <div class="split">
+      <div class="slot">
+        <b>Affiliate corner</b>
+        <p>One contained corner: satellite gaming kit, routers, apparel, VPNs.
+           Placeholder slot &mdash; real programmes are enrolled later and swap in as
+           content, never as a rebuild.</p>
+      </div>
+      <div class="slot">
+        <b>Support the site</b>
+        <p>A donation underlay for running costs. Placeholder slot on the same
+           terms &mdash; house content until there is something worth funding.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <a href="./">&larr; back to the lounge</a>
+    <p>Preview build. Sample telemetry, sample wall. Full specification lives with the project.</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* One controlled vocabulary, shared by the form, the wall and (later) the
+     validator and publisher. Out-of-enum is the cheapest spam filter there is,
+     and these labels are the i18n lookup keys. */
+  var VOCAB = {
+    providers: [
+      {id:"starlink", name:"Starlink",    lane:"live",    laneText:"Live",                       colour:"#5fd39a"},
+      {id:"leo",      name:"Amazon Leo",  lane:"limited", laneText:"Limited — tracking begins",  colour:"#ffb454"},
+      {id:"iris2",    name:"IRIS²",  lane:"pre",     laneText:"Pre-service — watching",     colour:"#7fb2ff"}
+    ],
+    platforms: [
+      {id:"pc",name:"PC"},{id:"ps",name:"PlayStation"},{id:"xbox",name:"Xbox"},
+      {id:"switch",name:"Switch"},{id:"cloud",name:"Cloud / streaming"},{id:"mobile",name:"Mobile"}
+    ],
+    criteria: [
+      {id:"latency",name:"High latency"},{id:"jitter",name:"Jitter"},{id:"loss",name:"Packet loss"},
+      {id:"disconnect",name:"Disconnects"},{id:"throughput",name:"Throughput cap"},
+      {id:"nat",name:"CGNAT / NAT type"},{id:"outage",name:"Total outage"},{id:"billing",name:"Billing"},
+      {id:"fine",name:"Played fine"}
+    ],
+    games: ["Apex Legends","Call of Duty","Counter-Strike 2","Destiny 2","EA FC","Fortnite",
+            "GTA Online","League of Legends","Minecraft","Overwatch 2","Rocket League","Valorant","Other"],
+    regions: ["North America — West","North America — East","United Kingdom","Europe — West",
+              "Europe — North","Australia / NZ","South America","Africa","Asia — East","Asia — South"]
+  };
+
+  /* Deterministic sample telemetry. Fixed arrays, never random: a chart that
+     reshuffles on reload cannot be evaluated or compared between sessions. */
+  var TELEMETRY = {
+    starlink:{uptime:"99.2%",latency:"41 ms",loss:"0.4%",
+      series:[18,14,11,9,12,16,21,26,31,29,24,20,17,15,19,28,44,61,73,66,48,33,25,21],baseline:27},
+    leo:{uptime:"—",latency:"—",loss:"—",series:null,baseline:null},
+    iris2:{uptime:"—",latency:"—",loss:"—",series:null,baseline:null}
+  };
+
+  var NEWS = [
+    {d:"2026-08-21",t:"Starlink restores service in Europe — West after a 47-minute routing fault.",s:"vendor status"},
+    {d:"2026-08-19",t:"Amazon Leo opens limited beta to a second tranche of North America — West addresses.",s:"vendor blog"},
+    {d:"2026-08-14",t:"IRIS² consortium confirms first launch window slips to the following quarter.",s:"press"},
+    {d:"2026-08-09",t:"Starlink publishes revised congestion policy for residential plans in peak hours.",s:"vendor status"}
+  ];
+
+  /* Seed wall. Illustrative — every one of these is written as sample copy. */
+  var SEED = [
+    {p:"starlink",g:"Valorant",pl:"pc",c:"jitter",s:-1,mins:12,txt:"Spikes every few rounds in the evening. Fine at 3am."},
+    {p:"starlink",g:"Call of Duty",pl:"ps",c:"latency",s:-2,mins:34,txt:"Unplayable between 8 and 11pm local."},
+    {p:"starlink",g:"Rocket League",pl:"pc",c:"fine",s:2,mins:51,txt:"Honestly no complaints, 40ms all week."},
+    {p:"starlink",g:"Destiny 2",pl:"xbox",c:"nat",s:-1,mins:78,txt:"Strict NAT, cannot join friends without a relay."},
+    {p:"leo",g:"Fortnite",pl:"pc",c:"disconnect",s:-2,mins:96,txt:"Dropped twice mid-match on the beta connection."},
+    {p:"starlink",g:"Minecraft",pl:"pc",c:"fine",s:1,mins:120,txt:"Realms works fine, no issues hosting."},
+    {p:"starlink",g:"Apex Legends",pl:"pc",c:"loss",s:-1,mins:143,txt:"2-3% loss during rain. Clears when it stops."},
+    {p:"starlink",g:"EA FC",pl:"ps",c:"latency",s:-1,mins:167,txt:""},
+    {p:"starlink",g:"Overwatch 2",pl:"pc",c:"jitter",s:-1,mins:190,txt:"Rubber-banding on defence, worse than last patch."},
+    {p:"starlink",g:"GTA Online",pl:"pc",c:"throughput",s:-1,mins:215,txt:"Capped hard after the data allowance."}
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
+  var byId = function(list,id){ for(var i=0;i<list.length;i++){ if(list[i].id===id) return list[i]; } return null; };
+
+  var reports = SEED.slice();
+  var pick = {provider:null, platform:null, criterion:null};
+
+  /* ---------------- news ---------------- */
+  $("news").innerHTML = NEWS.map(function(n){
+    return '<li><time>'+esc(n.d)+'</time><span>'+esc(n.t)+'</span><span class="src">'+esc(n.s)+'</span></li>';
+  }).join("");
+
+  /* ---------------- region ---------------- */
+  var region = $("region");
+  region.innerHTML = VOCAB.regions.map(function(r,i){
+    return '<option'+(i===2?' selected':'')+'>'+esc(r)+'</option>'; }).join("");
+  function setRegionLabel(){ $("regionLabel").textContent = region.value; }
+  region.addEventListener("change", setRegionLabel);
+  setRegionLabel();
+
+  /* ---------------- provider cards ---------------- */
+  function sparkline(series, baseline){
+    var w=300,h=72,max=Math.max.apply(null,series)*1.15,step=w/(series.length-1);
+    var pts=series.map(function(v,i){ return (i*step).toFixed(1)+","+(h-(v/max)*h).toFixed(1); }).join(" ");
+    var by=(h-(baseline/max)*h).toFixed(1);
+    return '<svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Reports over the last 24 hours against the 30-day baseline">'
+      + '<polyline points="'+pts+'" fill="none" stroke="#7fb2ff" stroke-width="2" stroke-linejoin="round"/>'
+      + '<line x1="0" y1="'+by+'" x2="'+w+'" y2="'+by+'" stroke="#ffd68c" stroke-width="1" stroke-dasharray="4 4" opacity=".8"/>'
+      + '</svg>';
+  }
+  $("providers").innerHTML = VOCAB.providers.map(function(p){
+    var t=TELEMETRY[p.id];
+    var body = t.series
+      ? '<div class="metrics">'
+        + '<div class="metric"><b>'+t.uptime+'</b><span>uptime</span></div>'
+        + '<div class="metric"><b>'+t.latency+'</b><span>median latency</span></div>'
+        + '<div class="metric"><b>'+t.loss+'</b><span>packet loss</span></div></div>'
+        + '<div class="chartlab"><span>Reports, last 24h</span>'
+        + '<span class="baselinekey"><i></i> 30-day baseline</span></div>'
+        + sparkline(t.series,t.baseline)
+      : '<p class="nodata">No telemetry yet. The lane is open and tracking starts with the service &mdash;'
+        + ' an empty chart here is honest, not broken.</p>';
+    return '<div class="card"><h3><span class="dot" style="background:'+p.colour+'"></span>'+esc(p.name)
+      + '<span class="lane" style="color:'+p.colour+'">'+esc(p.laneText)+'</span></h3>'+body+'</div>';
+  }).join("");
+
+  /* ---------------- form ---------------- */
+  function chips(host, list, key){
+    $(host).innerHTML = list.map(function(o){
+      return '<button type="button" class="chip" role="button" aria-pressed="false" data-v="'+o.id+'">'+esc(o.name)+'</button>';
+    }).join("");
+    $(host).addEventListener("click", function(e){
+      var b=e.target.closest(".chip"); if(!b) return;
+      Array.prototype.forEach.call(this.querySelectorAll(".chip"), function(c){
+        c.setAttribute("aria-pressed", String(c===b)); });
+      pick[key]=b.getAttribute("data-v");
+      refreshSend();
+    });
+  }
+  chips("f-provider", VOCAB.providers, "provider");
+  chips("f-platform", VOCAB.platforms, "platform");
+  chips("f-criterion", VOCAB.criteria, "criterion");
+
+  $("f-game").innerHTML = '<option value="">Which game?</option>'
+    + VOCAB.games.map(function(g){ return '<option>'+esc(g)+'</option>'; }).join("");
+
+  var text=$("f-text");
+  text.addEventListener("input", function(){ $("count").textContent = text.value.length; });
+
+  function refreshSend(){
+    var ok = pick.provider && pick.platform && pick.criterion;
+    $("send").disabled = !ok;
+    $("hint").textContent = ok
+      ? "Four taps. No account, no e-mail, coarse region only."
+      : "Pick a provider, platform and what happened.";
+  }
+
+  $("send").addEventListener("click", function(){
+    if($("send").disabled) return;
+    var crit = byId(VOCAB.criteria, pick.criterion);
+    reports.unshift({
+      p:pick.provider, g:$("f-game").value||"Other", pl:pick.platform, c:pick.criterion,
+      s: crit && crit.id==="fine" ? 2 : -1, mins:0, txt:text.value.trim(), mine:true
+    });
+    render();
+    var t=$("thanks"); t.classList.add("on");
+    setTimeout(function(){ t.classList.remove("on"); }, 2600);
+    text.value=""; $("count").textContent="0";
+  });
+
+  /* ---------------- wall + breakdown ---------------- */
+  function ago(m){
+    if(m===0) return "just now";
+    if(m<60) return m+" min ago";
+    var h=Math.round(m/60); return h+(h===1?" hour ago":" hours ago");
+  }
+  function render(){
+    /* breakdown by criterion, honest about small cells */
+    var counts={};
+    reports.forEach(function(r){ counts[r.c]=(counts[r.c]||0)+1; });
+    var rows=VOCAB.criteria.map(function(c){ return {c:c, n:counts[c.id]||0}; })
+                           .filter(function(r){ return r.n>0; })
+                           .sort(function(a,b){ return b.n-a.n; });
+    var top=rows.length?rows[0].n:1;
+    $("breakdown").innerHTML = rows.map(function(r){
+      var sup = r.n<3;
+      return '<div class="bar'+(sup?' suppressed':'')+'">'
+        + '<span class="k">'+esc(r.c.name)+'</span>'
+        + '<span class="t"><i style="width:'+Math.round(r.n/top*100)+'%"></i></span>'
+        + '<span class="n">'+r.n+(sup?' &middot; n&lt;3':'')+'</span></div>';
+    }).join("");
+    $("totalReports").textContent = reports.length + " reports";
+
+    $("wallCount").textContent = reports.length;
+    $("wall").innerHTML = reports.map(function(r){
+      var prov=byId(VOCAB.providers,r.p), plat=byId(VOCAB.platforms,r.pl), crit=byId(VOCAB.criteria,r.c);
+      var face = r.s>=2?"++":r.s===1?"+":r.s===-1?"−":"−−";
+      var col  = r.s>0?"var(--good)":r.s===-1?"var(--warn)":"var(--bad)";
+      return '<div class="post'+(r.mine?' mine':'')+'">'
+        + '<div class="meta"><span class="sent" style="color:'+col+'">'+face+'</span>'
+        + '<span class="tag">'+esc(prov?prov.name:r.p)+'</span>'
+        + '<span class="tag">'+esc(r.g)+'</span>'
+        + '<span class="tag">'+esc(plat?plat.name:r.pl)+'</span>'
+        + '<span class="tag crit">'+esc(crit?crit.name:r.c)+'</span>'
+        + '<span style="margin-left:auto">'+ago(r.mins)+'</span></div>'
+        + (r.txt?'<p>'+esc(r.txt)+'</p>':'')
+        + '</div>';
+    }).join("");
+  }
+
+  /* ---------------- data product tree ---------------- */
+  $("tree").textContent =
+    "/data/v1/\n"+
+    "  index.json          service index, schema pointers, publish cadence\n"+
+    "  schema.json         report + aggregate shapes, versioned\n"+
+    "  vocab.json          the controlled vocabulary above, versioned\n"+
+    "  wall/latest.json    moderated public wall\n"+
+    "  agg/hourly/latest.json\n"+
+    "  agg/daily/latest.json      agg/daily/<year>.json\n"+
+    "  exports/daily_agg.csv      the file an analyst drags into Excel\n"+
+    "  exports/reports.jsonl      aggregate rows, bulk\n"+
+    "  datapackage.json    Frictionless descriptor\n";
+
+  render();
+  refreshSend();
+})();
+</script>
+</body>
+</html>
