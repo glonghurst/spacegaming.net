@@ -135,13 +135,14 @@
     text-decoration:none;border-bottom:1px solid #3b3830;padding-bottom:3px}
   footer a:hover{color:#fff;border-color:#fff}
   footer p{margin-top:16px;font-size:10px;color:var(--faint);letter-spacing:.08em;line-height:1.7}
+  .pending{color:#7f8c9b;font-style:italic;font-size:13px}
 </style>
 </head>
 <body>
 
 <div class="previewbar">
   Preview — nothing here is live
-  <span>Telemetry and wall posts are illustrative sample data. Your report is held in this browser only; there is no ingress behind this page yet.</span>
+  <span>There is no data behind this page at all. The sample telemetry, sample headlines and sample wall posts were stripped on 2026-08-24 &mdash; the news banner fills from the queued Feedly ingest, and the game, platform and region lists stay empty until the vocabulary is ratified. Your report is held in this browser only.</span>
 </div>
 
 <div class="wrap">
@@ -255,7 +256,7 @@
 
   <footer>
     <a href="./">&larr; back to the lounge</a>
-    <p>Preview build. Sample telemetry, sample wall. Full specification lives with the project.</p>
+    <p>Preview build &mdash; structure only, no data. Full specification lives with the project, privately.</p>
   </footer>
 
 </div>
@@ -267,57 +268,55 @@
   /* One controlled vocabulary, shared by the form, the wall and (later) the
      validator and publisher. Out-of-enum is the cheapest spam filter there is,
      and these labels are the i18n lookup keys. */
+  /* One controlled vocabulary, shared by the form, the wall and (later) the
+     validator and publisher. Out-of-enum is the cheapest spam filter there is,
+     and these labels are the i18n lookup keys.
+
+     WHAT IS REAL AND WHAT IS EMPTY. providers and criteria come from the
+     ratified spec. platforms, games and regions were INVENTED BY CLAUDE as
+     placeholder copy and were stripped on 2026-08-24 on Gavin's instruction:
+     a plausible list nobody ratified is worse than an empty one, because it
+     gets built on. They stay empty until he sets them. The page degrades to
+     "not ratified" rather than inventing a replacement. */
   var VOCAB = {
     providers: [
       {id:"starlink", name:"Starlink",    lane:"live",    laneText:"Live",                       colour:"#5fd39a"},
       {id:"leo",      name:"Amazon Leo",  lane:"limited", laneText:"Limited — tracking begins",  colour:"#ffb454"},
-      {id:"iris2",    name:"IRIS²",  lane:"pre",     laneText:"Pre-service — watching",     colour:"#7fb2ff"}
-    ],
-    platforms: [
-      {id:"pc",name:"PC"},{id:"ps",name:"PlayStation"},{id:"xbox",name:"Xbox"},
-      {id:"switch",name:"Switch"},{id:"cloud",name:"Cloud / streaming"},{id:"mobile",name:"Mobile"}
+      {id:"iris2",    name:"IRIS²",       lane:"pre",     laneText:"Pre-service — watching",     colour:"#7fb2ff"}
     ],
     criteria: [
       {id:"latency",name:"High latency"},{id:"jitter",name:"Jitter"},{id:"loss",name:"Packet loss"},
       {id:"disconnect",name:"Disconnects"},{id:"throughput",name:"Throughput cap"},
-      {id:"nat",name:"CGNAT / NAT type"},{id:"outage",name:"Total outage"},{id:"billing",name:"Billing"},
-      {id:"fine",name:"Played fine"}
+      {id:"nat",name:"CGNAT / NAT type"},{id:"outage",name:"Total outage"},{id:"billing",name:"Billing"}
     ],
-    games: ["Apex Legends","Call of Duty","Counter-Strike 2","Destiny 2","EA FC","Fortnite",
-            "GTA Online","League of Legends","Minecraft","Overwatch 2","Rocket League","Valorant","Other"],
-    regions: ["North America — West","North America — East","United Kingdom","Europe — West",
-              "Europe — North","Australia / NZ","South America","Africa","Asia — East","Asia — South"]
+    platforms: [],
+    games: [],
+    regions: []
   };
 
   /* Deterministic sample telemetry. Fixed arrays, never random: a chart that
      reshuffles on reload cannot be evaluated or compared between sessions. */
+  /* Telemetry. Every figure here was invented as sample copy and was stripped
+     on 2026-08-24: a dashboard showing numbers nobody measured is a lie with a
+     chart on it. These fill in when the ingest is wired, not before. */
   var TELEMETRY = {
-    starlink:{uptime:"99.2%",latency:"41 ms",loss:"0.4%",
-      series:[18,14,11,9,12,16,21,26,31,29,24,20,17,15,19,28,44,61,73,66,48,33,25,21],baseline:27},
+    starlink:{uptime:"—",latency:"—",loss:"—",series:null,baseline:null},
     leo:{uptime:"—",latency:"—",loss:"—",series:null,baseline:null},
     iris2:{uptime:"—",latency:"—",loss:"—",series:null,baseline:null}
   };
 
-  var NEWS = [
-    {d:"2026-08-21",t:"Starlink restores service in Europe — West after a 47-minute routing fault.",s:"vendor status"},
-    {d:"2026-08-19",t:"Amazon Leo opens limited beta to a second tranche of North America — West addresses.",s:"vendor blog"},
-    {d:"2026-08-14",t:"IRIS² consortium confirms first launch window slips to the following quarter.",s:"press"},
-    {d:"2026-08-09",t:"Starlink publishes revised congestion policy for residential plans in peak hours.",s:"vendor status"}
-  ];
+  /* THIS IS THE FEEDLY SLOT. The four headlines that used to sit here were
+     written by Claude to show the shape of the banner. They read exactly like
+     real vendor-status copy, which is precisely the problem: nobody could tell
+     by looking that no feed existed. Stripped 2026-08-24. Fills from the
+     queued Feedly ingest -- see gavdev-ops/docs/orbital-link/ and the query
+     digest -- and stays visibly empty until then. */
+  var NEWS = [];
 
-  /* Seed wall. Illustrative — every one of these is written as sample copy. */
-  var SEED = [
-    {p:"starlink",g:"Valorant",pl:"pc",c:"jitter",s:-1,mins:12,txt:"Spikes every few rounds in the evening. Fine at 3am."},
-    {p:"starlink",g:"Call of Duty",pl:"ps",c:"latency",s:-2,mins:34,txt:"Unplayable between 8 and 11pm local."},
-    {p:"starlink",g:"Rocket League",pl:"pc",c:"fine",s:2,mins:51,txt:"Honestly no complaints, 40ms all week."},
-    {p:"starlink",g:"Destiny 2",pl:"xbox",c:"nat",s:-1,mins:78,txt:"Strict NAT, cannot join friends without a relay."},
-    {p:"leo",g:"Fortnite",pl:"pc",c:"disconnect",s:-2,mins:96,txt:"Dropped twice mid-match on the beta connection."},
-    {p:"starlink",g:"Minecraft",pl:"pc",c:"fine",s:1,mins:120,txt:"Realms works fine, no issues hosting."},
-    {p:"starlink",g:"Apex Legends",pl:"pc",c:"loss",s:-1,mins:143,txt:"2-3% loss during rain. Clears when it stops."},
-    {p:"starlink",g:"EA FC",pl:"ps",c:"latency",s:-1,mins:167,txt:""},
-    {p:"starlink",g:"Overwatch 2",pl:"pc",c:"jitter",s:-1,mins:190,txt:"Rubber-banding on defence, worse than last patch."},
-    {p:"starlink",g:"GTA Online",pl:"pc",c:"throughput",s:-1,mins:215,txt:"Capped hard after the data allowance."}
-  ];
+  /* The wall seeded ten invented reports, complete with plausible complaints
+     about rain and NAT types. Stripped 2026-08-24. An empty wall is the honest
+     state of a system that has never received a submission. */
+  var SEED = [];
 
   var $ = function(id){ return document.getElementById(id); };
   var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){
@@ -328,14 +327,19 @@
   var pick = {provider:null, platform:null, criterion:null};
 
   /* ---------------- news ---------------- */
-  $("news").innerHTML = NEWS.map(function(n){
-    return '<li><time>'+esc(n.d)+'</time><span>'+esc(n.t)+'</span><span class="src">'+esc(n.s)+'</span></li>';
-  }).join("");
+  $("news").innerHTML = NEWS.length
+    ? NEWS.map(function(n){
+        return '<li><time>'+esc(n.d)+'</time><span>'+esc(n.t)+'</span><span class="src">'+esc(n.s)+'</span></li>';
+      }).join("")
+    : '<li><time>—</time><span>No feed wired. This banner fills from the queued '
+      + 'Feedly ingest.</span><span class="src">not connected</span></li>';
 
   /* ---------------- region ---------------- */
   var region = $("region");
-  region.innerHTML = VOCAB.regions.map(function(r,i){
-    return '<option'+(i===2?' selected':'')+'>'+esc(r)+'</option>'; }).join("");
+  region.innerHTML = VOCAB.regions.length
+    ? VOCAB.regions.map(function(r,i){
+        return '<option'+(i===2?' selected':'')+'>'+esc(r)+'</option>'; }).join("")
+    : '<option value="">— regions not ratified —</option>';
   function setRegionLabel(){ $("regionLabel").textContent = region.value; }
   region.addEventListener("change", setRegionLabel);
   setRegionLabel();
@@ -368,6 +372,10 @@
 
   /* ---------------- form ---------------- */
   function chips(host, list, key){
+    if (!list || !list.length) {
+      $(host).innerHTML = '<span class="pending">— not ratified yet —</span>';
+      return;
+    }
     $(host).innerHTML = list.map(function(o){
       return '<button type="button" class="chip" role="button" aria-pressed="false" data-v="'+o.id+'">'+esc(o.name)+'</button>';
     }).join("");
@@ -383,8 +391,10 @@
   chips("f-platform", VOCAB.platforms, "platform");
   chips("f-criterion", VOCAB.criteria, "criterion");
 
-  $("f-game").innerHTML = '<option value="">Which game?</option>'
-    + VOCAB.games.map(function(g){ return '<option>'+esc(g)+'</option>'; }).join("");
+  $("f-game").innerHTML = VOCAB.games.length
+    ? '<option value="">Which game?</option>'
+      + VOCAB.games.map(function(g){ return '<option>'+esc(g)+'</option>'; }).join("")
+    : '<option value="">— games not ratified —</option>';
 
   var text=$("f-text");
   text.addEventListener("input", function(){ $("count").textContent = text.value.length; });
