@@ -1,16 +1,16 @@
 {
- "generated_at": "2026-08-15T10:58:23Z",
+ "generated_at": "2026-08-25T12:58:21Z",
  "doc": "15tSOfX4sdZPn08UaO3-meWoema0k0jvyAiMfNC1Z-qI",
  "section": "VETTED NEWS SCRAPE",
  "count": 4,
  "items": [
   {
    "id": "OBS-004",
-   "title": "Space.com — reported LRO imaging and Lowell spectrograph details",
-   "url": "https://www.space.com/astronomy/moon/spacex-rockets-moon-crash-highlights-a-tangible-operational-risk-of-lunar-settlement",
-   "date": "Aug 15, 2026",
-   "source": "Space.com (reporting KARI, NASA/LRO, Carl Schmidt, Patrick Lierle, and Lowell Discovery Telescope observations)",
-   "evidence": "Space.com reports that NASA’s LRO also imaged the impact site and that a Chinese commercial debris-monitoring satellite recorded the collision; it additionally attributes a bright lithium plume and fainter sodium signature to Lowell Discovery Telescope long-slit spectroscopy. No linked NASA/LROC image, Chinese sensor product, calibrated spectrum, observing log, plate scale, or quantitative plume/crater measurement accompanies the article, so these remain reputable secondary reports pending primary-product release.",
+   "title": "NASA LRO/LROC — confirmed crater and calibrated NAC measurements",
+   "url": "https://lroc.im-ldi.com/images/1499",
+   "date": "Aug 25, 2026",
+   "source": "Lunar Reconnaissance Orbiter Camera (NASA/GSFC/Intuitive Machines)",
+   "evidence": "LRO’s Narrow Angle Camera acquired six post-impact images on 11–12 August and confirmed the crater at 19.4759°N, 266.7138°E, elevation 511 m, measuring 18 m diameter and less than 3 m deep; the imagery also resolves bright/dark ejecta and a V-shaped low-angle pattern. The page provides image IDs and viewing geometry, but no downloadable calibrated reflectance/photometric product or formal uncertainty bounds for the crater dimensions.",
    "image": "data/news/OBS-004.jpg"
   },
   {
