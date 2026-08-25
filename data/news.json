@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-25T12:58:21Z",
+ "generated_at": "2026-08-25T13:58:38Z",
  "doc": "15tSOfX4sdZPn08UaO3-meWoema0k0jvyAiMfNC1Z-qI",
  "section": "VETTED NEWS SCRAPE",
  "count": 4,
@@ -24,11 +24,11 @@
   },
   {
    "id": "OBS-002",
-   "title": "KARI/KASA Danuri (KPLO/LUTI) — orbital before/after surface imaging",
-   "url": "https://x.com/kari2030/status/2085245021469687982",
-   "date": "Aug 7, 2026",
-   "source": "Korea Aerospace Research Institute / Korea AeroSpace Administration (KARI/KASA)",
-   "evidence": "Korea’s Danuri orbiter published pre-impact and post-impact LUTI images showing a new compact, asymmetric surface disturbance at the expected site. These are orbital sensor images confirming the impact aftermath; the published social-media frames do not yet supply a calibrated crater diameter, ejecta-ray length, or plume altitude.",
+   "title": "KASA Danuri (KPLO/LUTI) — agency-released orbital before/after imaging",
+   "url": "https://www.kasa.go.kr/prog/bbsArticle/BBSMSTR_000000000041/view.do?mno=sub01_01&nttId=B000000003411Nr2uS6",
+   "date": "Aug 25, 2026",
+   "source": "Korea AeroSpace Administration (KASA)",
+   "evidence": "KASA’s official release publishes Danuri high-resolution LUTI imagery acquired immediately before and after the Falcon 9 impact, confirming the new surface disturbance at the predicted site. The release provides processed comparison imagery but no calibrated crater dimensions, ejecta-ray measurements, photometric product, or formal measurement uncertainties.",
    "image": "data/news/OBS-002.jpg"
   },
   {
