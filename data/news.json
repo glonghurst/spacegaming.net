@@ -1,9 +1,17 @@
 {
- "generated_at": "2026-08-25T13:58:38Z",
+ "generated_at": "2026-08-25T15:58:16Z",
  "doc": "15tSOfX4sdZPn08UaO3-meWoema0k0jvyAiMfNC1Z-qI",
  "section": "VETTED NEWS SCRAPE",
- "count": 4,
+ "count": 5,
  "items": [
+  {
+   "id": "OBS-005",
+   "title": "CGTN / Gande-1 01 — space-based optical tracking and impact-region imaging",
+   "url": "https://news.cgtn.com/news/2026-08-07/Chinese-satellite-records-SpaceX-rocket-remnant-s-lunar-impact-1PpulfQmMhO/share_amp.html",
+   "date": "Aug 25, 2026",
+   "source": "CGTN (reporting Gande-1 01 / Aotian Technology / Liangxi Aerospace Technology Group)",
+   "evidence": "CGTN reports that the Gande-1 01 commercial debris-monitoring satellite imaged the Falcon 9 upper stage approaching the Moon on 1 and 3 August and recorded images of the lunar region at the 5 August impact time from roughly 380,000 km. The page shows reported sensor imagery but provides no plate scale, cadence, astrometric residuals, radiometric calibration, raw files, or independently quantified impact signature."
+  },
   {
    "id": "OBS-004",
    "title": "NASA LRO/LROC — confirmed crater and calibrated NAC measurements",
