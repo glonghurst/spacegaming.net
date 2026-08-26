@@ -1,9 +1,18 @@
 {
- "generated_at": "2026-08-26T16:28:07Z",
+ "generated_at": "2026-08-26T20:28:24Z",
  "doc": "15tSOfX4sdZPn08UaO3-meWoema0k0jvyAiMfNC1Z-qI",
  "section": "VETTED NEWS SCRAPE",
- "count": 6,
+ "count": 7,
  "items": [
+  {
+   "id": "OBS-007",
+   "title": "NASA LRO/LROC — ejecta-depth interpretation and CNEOS prediction accuracy",
+   "url": "https://science.nasa.gov/solar-system/moon/nasas-lro-images-falcon-9-crater-on-moon-learns-new-details/",
+   "date": "Aug 26, 2026",
+   "source": "NASA Science (NASA Goddard / Intuitive Machines / JPL-Caltech)",
+   "evidence": "NASA’s official LRO report says the Aug. 11–12 NAC sequence resolves bright and dark ejecta rays, interprets the weathered dark material as excavated from about 1.5 feet below the surface, and reports that Danuri located the crater within about 0.6 miles of CNEOS’s prediction. The page provides processed, enlarged imagery and quantitative interpretation, but no downloadable calibrated reflectance product, excavation-depth uncertainty, or prediction-error covariance.",
+   "image": "data/news/OBS-007.jpg"
+  },
   {
    "id": "OBS-006",
    "title": "OASI — pre-impact optical tracking and periodic photometric flashes",
