@@ -1,9 +1,17 @@
 {
- "generated_at": "2026-08-25T15:58:16Z",
+ "generated_at": "2026-08-26T16:28:07Z",
  "doc": "15tSOfX4sdZPn08UaO3-meWoema0k0jvyAiMfNC1Z-qI",
  "section": "VETTED NEWS SCRAPE",
- "count": 5,
+ "count": 6,
  "items": [
+  {
+   "id": "OBS-006",
+   "title": "OASI — pre-impact optical tracking and periodic photometric flashes",
+   "url": "https://oasi.org.uk/Obsvns/20260804_Falcon9_collision_Moon/20260804_Falcon9_collision_Moon.php",
+   "date": "Aug 26, 2026",
+   "source": "Orwell Astronomical Society (Ipswich) / Nigel Evans",
+   "evidence": "OASI reports more than 700 five-second exposures tracking 2025-010D on 4 August 2026; periodic magnitude 14–15 flashes lasting one or two frames recurred every 32–33 frames, corresponding to an approximately 208-second period. The page publishes stacked and folded image/video products, but gives no astrometric residuals, absolute photometric calibration, uncertainty on the period or magnitudes, or raw-frame download."
+  },
   {
    "id": "OBS-005",
    "title": "CGTN / Gande-1 01 — space-based optical tracking and impact-region imaging",
